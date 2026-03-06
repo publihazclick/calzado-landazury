@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Categories from "../components/Categories.astro";
+import FeaturedProducts from "../components/FeaturedProducts.astro";
+import PromoBanner from "../components/PromoBanner.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="Calzado Landazury - Eleva Cada Paso">
+  <Navbar />
+  <main class="pb-24 md:pb-0">
+    <Hero />
+    <Categories />
+    <FeaturedProducts />
+    <PromoBanner />
+  </main>
+  <Footer />
+</Layout>

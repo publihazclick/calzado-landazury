@@ -1,0 +1,51 @@
+---
+interface Props {
+  category: string;
+  name: string;
+  price: string;
+  image: string;
+  alt: string;
+  liked?: boolean;
+}
+
+const { category, name, price, image, alt, liked = false } = Astro.props;
+---
+
+<div class="group">
+  <div
+    class="relative aspect-square rounded-xl bg-white shadow-sm border border-slate-100 p-4 mb-4 overflow-hidden"
+  >
+    <button
+      class:list={[
+        "absolute top-3 right-3 z-10 size-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors",
+        liked ? "text-primary" : "text-slate-400 hover:text-primary",
+      ]}
+    >
+      <span class:list={["material-symbols-outlined text-xl", liked && "fill-1"]}
+        >favorite</span
+      >
+    </button>
+    <img
+      alt={alt}
+      class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+      src={image}
+      loading="lazy"
+    />
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">
+      {category}
+    </p>
+    <h4 class="text-slate-900 font-bold text-base truncate">
+      {name}
+    </h4>
+    <div class="flex items-center justify-between mt-2">
+      <span class="text-xl font-black text-slate-900">{price}</span>
+      <button
+        class="flex size-10 items-center justify-center rounded-full bg-primary text-white shadow-md shadow-primary/30 hover:scale-110 transition-transform"
+      >
+        <span class="material-symbols-outlined">add_shopping_cart</span>
+      </button>
+    </div>
+  </div>
+</div>

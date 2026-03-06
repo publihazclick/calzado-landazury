@@ -1,0 +1,68 @@
+---
+import ProductCard from "./ProductCard.astro";
+
+const products = [
+  {
+    category: "Lifestyle",
+    name: "Cloud Walker Pro",
+    price: "$129.00",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBnbsXfezjifAfZSlhnwvTzCzgdOhply0ouwZsxCMfjulAdZQL6-W0uWpKXJy0P6O0kNDZmEGuai_arnOAJDMloiPU31cZlQnLeoHOy0MAz1id8QWrY1e7zzqLWsHTjBhyQ4evXn9reZrONQWWH0GKXnoS0Z0GkVT5aPO-8_P13O0QfWsBSPFyZwJByfhdL9lgwBKnOhLrsDSEGn3-M_EaKDvFlMhGKhSPZpJHuj5FNvrx0_hgQ6YC51wJaTmfm-HbmcpnkWKZ6UKQ",
+    alt: "Zapatilla blanca y morada de moda",
+    liked: false,
+  },
+  {
+    category: "Running",
+    name: "Volt Runner X",
+    price: "$145.00",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBsq_cQQinqif6mT7Rb0w7_TiAUGbZ9rKMlTa7jowkQUomfl4Ar6kUKklmFDALHM4E7jix-qoqHNzq5dzVJgO0Apv1frVlZxQVSN6CsiG1B29bjBdlTHWz-AvJPFdm1eGn1DLOyPOlrQrnFWeYLp8jM50vX23MmsFUk_NIsZWcu7IjGQS1b56Od59ZGWq8SCyoeoHZp-JkTtUS1JzVQs2ig6k-ygJt8FWy3hVXL9vZYmuTrLxapqF3LR9f4Ng709Tj_1jOro0lN6ZA",
+    alt: "Zapatilla running verde neon",
+    liked: true,
+  },
+  {
+    category: "Classic",
+    name: "Heritage One",
+    price: "$99.00",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuD2OhvQQk-Pvu33kuL2kjrvGIN2bWVfEAPoM4qFmBL30v0Gu1LqkoD8nDXIUVekmaD07PV_VDRdG3aO8mpkEyDupTItfyM0Me6OIpoaDIiFxvemIuqQKjjALJxMD8WQK6uuuWlJO0PuueUucq_bjvLPA6w6RRsTIVNplpqZBu6aSGtamFzfa3bxwDWHogL4OFlBlNg0qD7HuPjT3o3QUPpSRZMlNiJ7f8NSYQVSmTkzqzEzq5cNaSDyfI6ePlf5MFchV60zpRWg2MU",
+    alt: "Zapatilla clasica blanca y negra",
+    liked: false,
+  },
+  {
+    category: "Running",
+    name: "Apex 2.0",
+    price: "$169.00",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBE6lhA4VHR4rK0vURni6fJOW7v2CtGjQJQhonnTxnd-0TTTjlZFuEP_hSXR0itW7YFROsQR7MorWHrqpy7nYOHdkLc0dvk9IWF6dexYlBG-YV3cdglFH4q50FGFIfxvXNrAiJ6cax74qR5aXg0Nizq6C9xmh4EP3_V5VjAIzDQ5tAy6x54vz_n719JEtTNLXpXL47nG5WmvfA5bZlU_1ixJ6U3KCCz9ZPqlX3nA07qdlSBRl4rXhq_Z7MsGD-OrlxNjiJAT7o8f44",
+    alt: "Zapatilla deportiva roja premium",
+    liked: false,
+  },
+];
+---
+
+<section id="productos" class="mt-10 md:mt-16">
+  <div class="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
+    <div class="flex items-center justify-between mb-6 md:mb-8">
+      <h3 class="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Productos Destacados
+      </h3>
+      <a class="text-primary font-bold text-sm hover:underline" href="#">
+        Ver Todos
+      </a>
+    </div>
+
+    <!-- Mobile: horizontal scroll / Desktop: grid -->
+    <div
+      class="flex gap-5 overflow-x-auto hide-scrollbar pb-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible"
+    >
+      {
+        products.map((product) => (
+          <div class="flex-none w-64 md:w-auto">
+            <ProductCard {...product} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+const categories = [
+  { label: "Todos", active: true },
+  { label: "Running", active: false },
+  { label: "Lifestyle", active: false },
+  { label: "Basketball", active: false },
+  { label: "Casual", active: false },
+  { label: "Formal", active: false },
+];
+---
+
+<section id="categorias" class="mt-8 md:mt-12 px-4 md:px-8 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex gap-3 overflow-x-auto hide-scrollbar md:justify-center">
+      {
+        categories.map((cat) => (
+          <button
+            class:list={[
+              "flex-none px-6 py-2 rounded-full font-semibold text-sm transition-colors",
+              cat.active
+                ? "bg-primary text-white"
+                : "bg-white text-slate-600 border border-slate-200 hover:border-primary hover:text-primary",
+            ]}
+          >
+            {cat.label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
