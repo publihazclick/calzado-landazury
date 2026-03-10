@@ -66,36 +66,103 @@
     <!-- Formulario de contacto -->
     <div class="mt-8 md:mt-12 rounded-xl bg-white border border-slate-100 shadow-sm p-6 md:p-10 max-w-2xl mx-auto">
       <h4 class="font-bold text-lg text-slate-900 mb-6 text-center">Enviar un mensaje</h4>
-      <form class="flex flex-col gap-4">
+
+      <!-- Alerta de éxito -->
+      <div id="contact-success" class="hidden mb-4 flex items-center gap-3 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-green-800 text-sm font-medium">
+        <span class="material-symbols-outlined text-green-600 text-base">check_circle</span>
+        ¡Mensaje enviado! Te responderemos pronto.
+      </div>
+
+      <!-- Alerta de error -->
+      <div id="contact-error" class="hidden mb-4 flex items-center gap-3 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-red-800 text-sm font-medium">
+        <span class="material-symbols-outlined text-red-600 text-base">error</span>
+        <span id="contact-error-msg">Hubo un error. Intentalo de nuevo.</span>
+      </div>
+
+      <form id="contact-form" class="flex flex-col gap-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
+            id="field-nombre"
             type="text"
             placeholder="Nombre"
+            required
             class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
           />
           <input
+            id="field-email"
             type="email"
             placeholder="Correo electronico"
+            required
             class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
           />
         </div>
         <input
+          id="field-asunto"
           type="text"
           placeholder="Asunto"
+          required
           class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
         />
         <textarea
+          id="field-mensaje"
           rows="4"
           placeholder="Tu mensaje..."
+          required
           class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none"
         ></textarea>
         <button
+          id="contact-btn"
           type="submit"
-          class="w-full md:w-auto md:self-end px-8 py-3 rounded-full bg-primary text-white font-bold text-sm hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-primary/20"
+          class="w-full md:w-auto md:self-end px-8 py-3 rounded-full bg-primary text-white font-bold text-sm hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-primary/20 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
         >
           Enviar Mensaje
         </button>
       </form>
     </div>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const btn = document.getElementById('contact-btn') as HTMLButtonElement;
+  const successEl = document.getElementById('contact-success')!;
+  const errorEl = document.getElementById('contact-error')!;
+  const errorMsg = document.getElementById('contact-error-msg')!;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    successEl.classList.add('hidden');
+    errorEl.classList.add('hidden');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const payload = {
+      nombre: (document.getElementById('field-nombre') as HTMLInputElement).value.trim(),
+      email: (document.getElementById('field-email') as HTMLInputElement).value.trim(),
+      asunto: (document.getElementById('field-asunto') as HTMLInputElement).value.trim(),
+      mensaje: (document.getElementById('field-mensaje') as HTMLTextAreaElement).value.trim(),
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        form.reset();
+        successEl.classList.remove('hidden');
+      } else {
+        errorMsg.textContent = json.error || 'Hubo un error. Intentalo de nuevo.';
+        errorEl.classList.remove('hidden');
+      }
+    } catch {
+      errorMsg.textContent = 'No se pudo conectar. Revisa tu conexion.';
+      errorEl.classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar Mensaje';
+    }
+  });
+</script>
   </div>
 </section>

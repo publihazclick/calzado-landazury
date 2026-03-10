@@ -1,0 +1,104 @@
+---
+export const prerender = false;
+
+import { initContactsTable, getContacts } from '../../lib/db';
+
+await initContactsTable();
+const contacts = await getContacts();
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensajes de Contacto – Calzado Landazury</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f6f6f8; color: #0f172a; min-height: 100vh; }
+    header { background: #3713ec; color: white; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    header h1 { font-size: 1.25rem; font-weight: 800; }
+    header a { color: rgba(255,255,255,0.8); font-size: 0.875rem; text-decoration: none; }
+    header a:hover { color: white; }
+    main { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    .stats { display: flex; gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: white; border-radius: 1rem; padding: 1.25rem 1.75rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .stat-card .number { font-size: 2rem; font-weight: 800; color: #3713ec; }
+    .stat-card .label { font-size: 0.875rem; color: #64748b; margin-top: 0.25rem; }
+    .card { background: white; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { background: #f8fafc; padding: 0.875rem 1rem; text-align: left; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; border-bottom: 1px solid #e2e8f0; }
+    tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+    tbody td { padding: 1rem; font-size: 0.875rem; color: #334155; vertical-align: top; }
+    .badge { display: inline-block; background: #ede9fe; color: #5b21b6; border-radius: 99px; padding: 0.2rem 0.75rem; font-size: 0.75rem; font-weight: 600; }
+    .mensaje-cell { max-width: 280px; white-space: pre-wrap; word-break: break-word; }
+    .empty { text-align: center; padding: 4rem 2rem; color: #94a3b8; }
+    .empty p { font-size: 1rem; margin-top: 0.5rem; }
+    @media (max-width: 768px) {
+      thead { display: none; }
+      tbody tr { display: block; padding: 1rem; border-bottom: 1px solid #e2e8f0; }
+      tbody td { display: block; padding: 0.25rem 0; }
+      tbody td::before { content: attr(data-label); font-weight: 700; font-size: 0.75rem; color: #64748b; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.1rem; }
+      .mensaje-cell { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calzado Landazury — Mensajes de Contacto</h1>
+    <a href="/">← Volver al sitio</a>
+  </header>
+
+  <main>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="number">{contacts.length}</div>
+        <div class="label">Mensajes recibidos</div>
+      </div>
+    </div>
+
+    <div class="card">
+      {contacts.length === 0 ? (
+        <div class="empty">
+          <strong>Sin mensajes aún</strong>
+          <p>Los mensajes del formulario de contacto aparecerán aquí.</p>
+        </div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Asunto</th>
+              <th>Mensaje</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map((c: any) => (
+              <tr>
+                <td data-label="ID"><span class="badge">#{c.id}</span></td>
+                <td data-label="Nombre"><strong>{c.nombre}</strong></td>
+                <td data-label="Email"><a href={`mailto:${c.email}`} style="color:#3713ec">{c.email}</a></td>
+                <td data-label="Asunto">{c.asunto}</td>
+                <td data-label="Mensaje" class="mensaje-cell">{c.mensaje}</td>
+                <td data-label="Fecha" style="white-space:nowrap;color:#64748b">
+                  {new Date(c.creado_en).toLocaleString('es-CO', {
+                    day: '2-digit', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                  })}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </main>
+</body>
+</html>
